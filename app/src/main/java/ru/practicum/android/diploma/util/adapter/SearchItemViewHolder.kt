@@ -6,8 +6,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.SearchItemViewBinding
 import ru.practicum.android.diploma.domain.models.VacancyModel
+import ru.practicum.android.diploma.util.adapter.ConvertCurrency.converterSalaryToString
 
-class ViewHolder(
+class SearchItemViewHolder(
     private val binding: SearchItemViewBinding,
     private val onClick: (VacancyModel) -> Unit,
     private val onLongClick: (VacancyModel) -> Unit
@@ -27,12 +28,13 @@ class ViewHolder(
             }
 
             companyTitle.text = item.employer?.name
-            salaryTitle.text = convertSalary(item, context = salaryTitle.context)
+            salaryTitle.text = converterSalaryToString(item.salary?.from, item.salary?.to, item.salary?.currency)
 
             root.setOnClickListener { onClick(item) }
             root.setOnLongClickListener {
                 onLongClick(item)
-                true }
+                true
+            }
 
             Glide.with(itemView)
                 .load(item.employer?.logoUrls?.logo90)

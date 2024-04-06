@@ -7,6 +7,4 @@ object Constants {
     const val HH_BASE_URL = "https://api.hh.ru/"
     const val NO_CONNECTION_ERROR = -1
     const val BAD_REQUEST_ERROR = 400
-    const val NOT_FOUND_ERROR = 404
-    const val UNEXPECTED_ERROR = -2
 }

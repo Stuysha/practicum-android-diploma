@@ -17,4 +17,6 @@
     <string name="from">от</string>
     <string name="to">до</string>
     <string name="filter_icon_description">filter_icon_description</string>
+    <string name="there_no_such_vacancies">Таких вакансий нет</string>
+    <string name="server_error">Ошибка сервера</string>
 </resources>

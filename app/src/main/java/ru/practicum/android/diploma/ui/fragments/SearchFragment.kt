@@ -8,23 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.VacancyModel
 import ru.practicum.android.diploma.presentation.SearchViewModel
 import ru.practicum.android.diploma.ui.state.SearchScreenState
 import ru.practicum.android.diploma.util.ErrorVariant
-import ru.practicum.android.diploma.util.adapter.Adapter
+import ru.practicum.android.diploma.util.adapter.PageVacancyAdapter
+import ru.practicum.android.diploma.util.adapter.SearchLoadStateAdapter
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
-    private val adapter = Adapter(onClick = { actionOnClick(it.id) })
+    private var adapter: PageVacancyAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +42,25 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val vacancyList = binding.searchRecycleView
+        adapter = adapter ?: PageVacancyAdapter { actionOnClick(it.id) }.apply {
+            this.addLoadStateListener(viewModel::listener)
+        }
 
+        vacancyList.adapter = adapter?.withLoadStateFooter(
+            footer = SearchLoadStateAdapter(),
+        )
+
+        vacancyList.layoutManager = LinearLayoutManager(context)
+
+        lifecycleScope.launch {
+            viewModel.stateVacancyData.collectLatest {
+                adapter?.submitData(it)
+            }
+        }
         viewModel.searchState.observe(viewLifecycleOwner) {
             render(it)
         }
-
-        binding.searchRecycleView.adapter = adapter
 
         binding.searchQuery.doOnTextChanged { query, _, _, _ ->
             if (query.isNullOrEmpty()) {
@@ -54,7 +72,7 @@ class SearchFragment : Fragment() {
             }
 
             if (binding.searchQuery.hasFocus() && query.toString().isNotEmpty()) {
-                showBlank()
+                showBlank(query.toString().isEmpty())
             }
             viewModel.onSearchQueryChange(query.toString())
         }
@@ -74,6 +92,12 @@ class SearchFragment : Fragment() {
         binding.clearCrossIc.setOnClickListener {
             viewModel.onSearchQueryChange(null)
             clearSearch()
+        }
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            if (it != null) {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                viewModel.clearMessageAddPlayList()
+            }
         }
     }
 
@@ -95,47 +119,28 @@ class SearchFragment : Fragment() {
         when (state) {
             is SearchScreenState.Default -> showBlank()
             is SearchScreenState.Loading -> showProgress()
-            is SearchScreenState.Success -> showSearchResult(state.vacancies, state.found)
-            is SearchScreenState.NothingFound -> showSearchResult(state.vacancies, state.found)
+            is SearchScreenState.Success -> showSearchResult(state.found)
+            is SearchScreenState.NothingFound -> showSearchResult(state.found)
             is SearchScreenState.Error -> showNoConnectionError(state.errorVariant)
             is SearchScreenState.LoadNextPage -> showBlank()
         }
     }
 
-    private fun showSearchResult(vacancies: List<VacancyModel>, found: Int) {
-        adapter.setVacancies(vacancies)
+    private fun showSearchResult(found: Int) {
         with(binding) {
             searchRecycleView.isVisible = true
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
             searchDefaultPlaceholder.isVisible = false
-            noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
         }
-        if (vacancies.isEmpty()) {
-            showNoVacancyError()
-        } else {
-            binding.textUnderSearch.isVisible = true
-            binding.textUnderSearch.text = resources.getQuantityString(R.plurals.vacancy_count, found, found)
-            binding.noVacancyToShow.isVisible = false
-            binding.searchRecycleView.isVisible = true
-        }
-    }
-
-    private fun showNoVacancyError() {
-        with(binding) {
-            searchRecycleView.isVisible = true
-            centerProgressBar.isVisible = false
-            bottomProgressBar.isVisible = false
-            textUnderSearch.isVisible = false
-            searchDefaultPlaceholder.isVisible = false
-            noVacancyToShow.isVisible = false
-            noConnectionPlaceholder.isVisible = false
-            binding.textUnderSearch.isVisible = false
-            binding.noVacancyToShow.isVisible = true
-            binding.noVacancyToShowText.isVisible = true
-        }
+        binding.textUnderSearch.isVisible = true
+        binding.textUnderSearch.text = resources.getQuantityString(R.plurals.vacancy_count, found, found)
+        binding.noVacancyToShow.isVisible = false
+        binding.searchRecycleView.isVisible = true
+        binding.badRequest.isVisible = false
+        binding.badRequestText.isVisible = false
     }
 
     private fun showNoConnectionError(errorVariant: ErrorVariant) {
@@ -149,6 +154,8 @@ class SearchFragment : Fragment() {
             noConnectionPlaceholder.isVisible = false
             noConnectionText.isVisible = false
             noVacancyToShowText.isVisible = false
+            binding.badRequest.isVisible = false
+            binding.badRequestText.isVisible = false
         }
         when (errorVariant) {
             ErrorVariant.NO_CONNECTION -> {
@@ -156,11 +163,17 @@ class SearchFragment : Fragment() {
                 binding.noConnectionText.isVisible = true
             }
 
-            else -> {
-                binding.noVacancyToShowText.isVisible = true
-                binding.noVacancyToShow.isVisible = true
+            ErrorVariant.BAD_REQUEST -> {
+                binding.badRequest.isVisible = true
+                binding.badRequestText.isVisible = true
             }
 
+            ErrorVariant.NO_CONTENT -> {
+                binding.noVacancyToShowText.isVisible = true
+                binding.noVacancyToShow.isVisible = true
+                binding.textUnderSearch.isVisible = true
+                binding.textUnderSearch.setText(R.string.there_no_such_vacancies)
+            }
         }
     }
 
@@ -173,20 +186,24 @@ class SearchFragment : Fragment() {
             searchDefaultPlaceholder.isVisible = false
             noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
+            binding.badRequest.isVisible = false
+            binding.badRequestText.isVisible = false
         }
     }
 
-    private fun showBlank() {
+    private fun showBlank(showDefaultPlaceholder: Boolean = true) {
         with(binding) {
             searchRecycleView.isVisible = false
             centerProgressBar.isVisible = false
             bottomProgressBar.isVisible = false
             textUnderSearch.isVisible = false
-            searchDefaultPlaceholder.isVisible = true
+            searchDefaultPlaceholder.isVisible = showDefaultPlaceholder
             noVacancyToShow.isVisible = false
             noConnectionPlaceholder.isVisible = false
             noConnectionText.isVisible = false
             noVacancyToShowText.isVisible = false
+            binding.badRequest.isVisible = false
+            binding.badRequestText.isVisible = false
         }
     }
 

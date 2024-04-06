@@ -10,9 +10,9 @@ interface SearchInteractor {
 
     suspend fun getCurrentVacancyDetails(id: String): Response<out VacancyModel>
 
-    fun getVacancies(
+    suspend fun getVacancies(
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Flow<Response<out SearchResponseModel>>
+    ): Response<out SearchResponseModel>
 }

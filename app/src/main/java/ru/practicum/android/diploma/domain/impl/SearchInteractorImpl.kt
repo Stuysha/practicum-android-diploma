@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.domain.impl
 
-import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.domain.Response
 import ru.practicum.android.diploma.domain.api.SearchInteractor
 import ru.practicum.android.diploma.domain.api.SearchRepository
@@ -16,11 +15,11 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
         return searchRepository.getCurrentVacancyDetails(id)
     }
 
-    override fun getVacancies(
+    override suspend fun getVacancies(
         query: String,
         page: Int,
         filters: HashMap<String, String>
-    ): Flow<Response<out SearchResponseModel>> {
+    ): Response<out SearchResponseModel> {
         return searchRepository.getVacancies(query, page, filters)
     }
 }
