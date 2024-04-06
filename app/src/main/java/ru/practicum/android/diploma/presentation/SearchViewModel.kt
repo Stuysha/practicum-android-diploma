@@ -13,7 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.Response
@@ -38,7 +40,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     var stateRefresh: LoadState? = null
     var errorMessage = MutableLiveData<String?>()
     val stateVacancyData = actionStateFlow.flatMapLatest {
-        //actualSearchString = it
         getPagingData(it)
     }
 
@@ -46,9 +47,10 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         debounce<String?>(Constants.SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { query ->
             viewModelScope.launch(Dispatchers.IO) {
                 found = null
-                if (query.isNullOrBlank()) return@launch
+                if (query.isNullOrBlank() || query == lastQuery) return@launch
+                lastQuery = query
                 setState(SearchScreenState.Loading)
-                actionStateFlow.emit(query.trim())
+                actionStateFlow.emit(query)
             }
         }
 
@@ -58,8 +60,7 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         }
 
     fun onSearchQueryChange(query: String?) {
-        lastQuery = query
-        searchDebounce(query)
+        searchDebounce(query?.trim())
     }
 
     private fun setState(state: SearchScreenState) {
@@ -76,11 +77,11 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             when (val refresh = loadState.source.refresh) {
                 is LoadState.Error -> when (refresh.error) {
                     is ConnectException -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.NO_CONNECTION) //SearchState.NoInternet
+                        SearchScreenState.Error(ErrorVariant.NO_CONNECTION)
                     is NullPointerException -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.NO_CONTENT) //SearchState.FailedToGetList
+                        SearchScreenState.Error(ErrorVariant.NO_CONTENT)
                     is ServerError -> _searchState.value =
-                        SearchScreenState.Error(ErrorVariant.BAD_REQUEST) //SearchState.ServerError
+                        SearchScreenState.Error(ErrorVariant.BAD_REQUEST)
                 }
 
                 LoadState.Loading -> {}
@@ -102,24 +103,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
             }
         }
     }
-
-//    private fun search(query: String?) {
-//        if (query.isNullOrBlank()) return
-//        setState(SearchScreenState.Loading)
-//
-//        viewModelScope.launch {
-//            searchInteractor.getVacancies(query, 1, HashMap()).collect {
-//                when (it) {
-//                    is Response.Success -> {
-//                        setState(SearchScreenState.Success(it.data.vacancies, it.data.found))
-//                        found = it.data.found
-//                    }
-//
-//                    is Response.Error -> setState(SearchScreenState.Error(errorVariant = it.error))
-//                }
-//            }
-//        }
-//    }
 
     suspend fun search(
         expression: String,

@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -209,6 +210,10 @@ class SearchFragment : Fragment() {
 
     private fun actionOnClick(id: String) {
         if (!viewModel.isClickable) return
+        val navController = findNavController()
+        val bundle = Bundle()
+        bundle.putString("vacancyId", id)
+        navController.navigate(R.id.vacancyFragment, bundle)
         viewModel.actionOnClick()
     }
 

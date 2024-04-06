@@ -21,10 +21,10 @@ interface HeadHuntersApi {
     @GET("/vacancies/{vacancy_id}/similar_vacancies")
     suspend fun getSimilarVacancies(@Path("vacancy_id") id: String): SearchResponseDto
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: Application Name (riabikina5@gmail.com)"
-    )
+//    @Headers(
+//        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+//        "HH-User-Agent: Application Name (riabikina5@gmail.com)"
+//    )
     @GET("/vacancies")
     suspend fun getVacancies(
         @Query("text") query: String,
