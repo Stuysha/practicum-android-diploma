@@ -141,7 +141,6 @@ class VacancyFragment : Fragment() {
             contactEmail.text = vacancy.contacts?.email
             contactsPhone.text = getPhonesText(vacancy.contacts?.phones)
             contactsComment.text = getPhonesCommentsText(vacancy.contacts?.phones)
-
             showFields()
             hideGroups(vacancy)
 
@@ -174,7 +173,17 @@ class VacancyFragment : Fragment() {
 
     private fun hideGroups(vacancy: VacancyDetailsModel) {
         with(binding) {
-            contactsGroup.isVisible = vacancy.contacts != null
+            if (
+                vacancy.contacts?.name.isNullOrEmpty() &&
+                vacancy.contacts?.email.isNullOrEmpty() &&
+                vacancy.contacts?.phones.isNullOrEmpty()
+            ) {
+                groupContacts.visibility = View.GONE
+                contactsGroup.visibility = View.GONE
+            } else {
+                groupContacts.visibility = View.VISIBLE
+                contactsGroup.visibility = View.VISIBLE
+            }
             contactsEmailGroup.isVisible = !vacancy.contacts?.email.isNullOrBlank()
             contactsPhoneGroup.isVisible = vacancy.contacts?.phones?.isNotEmpty() ?: false
             contactsCommentGroup.isVisible =

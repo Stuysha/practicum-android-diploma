@@ -10,7 +10,7 @@ data class FiltersState(
         regionId = "",
         industry = "",
         industryId = "",
-        expectedSalary = 0,
+        expectedSalary = "",
         salaryOnlyCheckbox = false
     ),
     val showApply: Boolean = false,

@@ -45,6 +45,7 @@
             android:layout_marginHorizontal="@dimen/margin_16dp"
             android:background="@drawable/shape_search_edit_text"
             android:hint="@string/search_hint"
+            android:imeOptions="actionDone"
             android:maxLines="1"
             android:paddingStart="@dimen/dimen_16dp"
             android:paddingTop="@dimen/dimen_4dp"

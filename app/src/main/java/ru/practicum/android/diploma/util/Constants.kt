@@ -9,4 +9,8 @@ object Constants {
     const val BAD_REQUEST_ERROR = 400
     const val BUNDLE_KEY_VACANCY_ID = "vacancyId"
     const val REGION_BACKSTACK_KEY = "region_key"
+    const val AREA = "area"
+    const val INDUSTRY = "industry"
+    const val SALARY = "salary"
+    const val ONLY_WITH_SALARY = "only_with_salary"
 }

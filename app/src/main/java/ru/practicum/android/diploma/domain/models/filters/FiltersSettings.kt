@@ -7,11 +7,11 @@ data class FiltersSettings(
     val regionId: String,
     val industry: String,
     val industryId: String,
-    val expectedSalary: Int,
+    val expectedSalary: String,
     val salaryOnlyCheckbox: Boolean
 )
 
 fun FiltersSettings.checkEmpty(): Boolean {
     return countryId.isEmpty() && regionId.isEmpty() && industry.isEmpty()
-        && industryId.isEmpty() && expectedSalary == Int.MIN_VALUE && !salaryOnlyCheckbox
+        && industryId.isEmpty() && expectedSalary.isEmpty() && !salaryOnlyCheckbox
 }

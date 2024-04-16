@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -34,12 +33,11 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
     private fun monitorChangesFilter() {
         viewModelScope.launch {
             val showApply = filter != oldFilter
-            val showClear: Boolean = filter?.salaryOnlyCheckbox ?: false
             withContext(Dispatchers.Main) {
                 _filterState.value = filterState.value.copy(
                     filters = filter!!,
                     showApply = showApply,
-                    showClear = showClear || filter?.checkEmpty() == false
+                    showClear = showApply || filter?.checkEmpty() == false
                 )
             }
         }
@@ -49,7 +47,6 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
         viewModelScope.launch(Dispatchers.IO) {
             oldFilter = getPrefs()
             filter = oldFilter?.copy()
-            Log.e("myLog", "Check salary ---- ${filter?.expectedSalary}")
         }
     }
 
@@ -69,9 +66,9 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
         )
     }
 
-    fun setExpectedSalary(expectedSalary: Int?) {
+    fun setExpectedSalary(expectedSalary: String?) {
         filter = filter?.copy(
-            expectedSalary = expectedSalary ?: 0
+            expectedSalary = expectedSalary ?: ""
         )
     }
 
@@ -95,5 +92,9 @@ class FilterViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
             oldFilter = getPrefs()
             filter = oldFilter?.copy()
         }
+    }
+
+    fun getIndustryId(): String? {
+        return filter?.industryId
     }
 }

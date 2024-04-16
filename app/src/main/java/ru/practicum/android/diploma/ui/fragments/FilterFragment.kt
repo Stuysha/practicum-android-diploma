@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.BundleCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.filters.FiltersSettings
+import ru.practicum.android.diploma.domain.models.filters.SubIndustry
 import ru.practicum.android.diploma.presentation.FilterViewModel
 
 class FilterFragment : Fragment() {
@@ -44,6 +47,9 @@ class FilterFragment : Fragment() {
                 clearButtonSalaryVisibility()
             }
         }
+
+        setFragmentResultListenerControl()
+
         initButtonListeners()
         initTextBehaviour()
     }
@@ -60,11 +66,21 @@ class FilterFragment : Fragment() {
         binding.salaryFlagCheckbox.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setSalaryOnlyCheckbox(isChecked)
         }
+        binding.industryTextInput.setOnClickListener {
+            val industryIdPrefs = viewModel.getIndustryId()
+            findNavController().navigate(
+                R.id.action_filterFragment_to_industry_filer_screen,
+                bundleOf(
+                    IndustryFilterFragment.INDUSTRY_KEY_ID to industryIdPrefs
+                )
+            )
+        }
+
     }
 
     private fun initTextBehaviour() {
         binding.salary.doOnTextChanged { text, _, _, _ ->
-            viewModel.setExpectedSalary(text?.toString()?.toIntOrNull())
+            viewModel.setExpectedSalary(text?.toString())
             if (text.isNullOrEmpty()) {
                 binding.salaryLayout.endIconMode = TextInputLayout.END_ICON_NONE
             } else {
@@ -77,6 +93,11 @@ class FilterFragment : Fragment() {
     }
 
     private fun initFilterSettings(filterSettings: FiltersSettings) {
+        if (binding.salary.isFocused.not() &&
+            binding.salary.text?.toString() != filterSettings.expectedSalary
+        ) {
+            binding.salary.setText(filterSettings.expectedSalary)
+        }
         setStateLocation(filterSettings.country, filterSettings.region)
         setStateIndustry(filterSettings.industry)
         binding.salaryFlagCheckbox.isChecked = filterSettings.salaryOnlyCheckbox
@@ -96,6 +117,9 @@ class FilterFragment : Fragment() {
                 if (country.isNullOrEmpty()) {
                     R.drawable.ic_arrow_forward_14px
                 } else {
+                    setEndIconOnClickListener {
+                        clearWorkPlace()
+                    }
                     R.drawable.ic_close_cross_14px
                 }
             )
@@ -111,16 +135,34 @@ class FilterFragment : Fragment() {
     private fun setStateIndustry(industry: String?) {
         binding.industryTextInput.apply {
             visibility = if (industry.isNullOrEmpty()) View.GONE else View.VISIBLE
-            setOnClickListener { clearIndustry() }
+            binding.industryTextInput.setText(industry)
         }
+
         binding.industryLayout.apply {
             setEndIconDrawable(
                 if (industry.isNullOrEmpty()) {
+                    setEndIconOnClickListener {
+                        findNavController().navigate(R.id.action_filterFragment_to_industry_filer_screen)
+                    }
                     R.drawable.ic_arrow_forward_14px
                 } else {
+                    setEndIconOnClickListener {
+                        clearIndustry()
+                    }
                     R.drawable.ic_close_cross_14px
                 }
             )
+        }
+    }
+
+    private fun setFragmentResultListenerControl() {
+        parentFragmentManager.setFragmentResultListener(
+            IndustryFilterFragment.REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val industry =
+                BundleCompat.getParcelable(bundle, IndustryFilterFragment.INDUSTRY_KEY, SubIndustry::class.java)
+            viewModel.setNewIndustry(industry)
         }
     }
 
@@ -144,8 +186,8 @@ class FilterFragment : Fragment() {
 
     private fun clearArguments(type: Int) {
         when (type) {
-            0 -> binding.industryLayout.isVisible = false
-            1 -> binding.workPlaceLayout.isVisible = false
+            0 -> binding.industryTextInput.isVisible = false
+            1 -> binding.workTextInput.isVisible = false
         }
     }
 

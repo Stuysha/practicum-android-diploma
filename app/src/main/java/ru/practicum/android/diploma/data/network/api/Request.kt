@@ -4,7 +4,7 @@ sealed interface Request {
     data class MainSearchRequest(
         val query: String,
         val page: Int,
-        val filters: HashMap<String, String>
+        val filters: Map<String, String>
     ) : Request
 
     data class SimilarVacanciesRequest(val id: String) : Request

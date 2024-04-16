@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.domain.api.FiltersRepository
 import ru.practicum.android.diploma.domain.api.SearchRepository
 
 val repositoryModule = module {
-    factory { SearchRepositoryImpl(get()) } bind SearchRepository::class
+    factory { SearchRepositoryImpl(get(), get()) } bind SearchRepository::class
     factory { FavoriteVacancyRepositoryImpl(get()) } bind FavoriteVacancyRepository::class
     factory { FiltersRepositoryImpl(get(), get()) } bind FiltersRepository::class
 }

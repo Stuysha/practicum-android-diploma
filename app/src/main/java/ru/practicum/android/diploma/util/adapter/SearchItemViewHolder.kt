@@ -19,7 +19,7 @@ class SearchItemViewHolder(
             if (item.area?.name?.isNotBlank() == true) {
                 val title = buildString {
                     append(item.name)
-                    append(",")
+                    append(", ")
                     append(item.area.name)
                 }
                 positionTitle.text = title

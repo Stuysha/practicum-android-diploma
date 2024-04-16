@@ -24,7 +24,7 @@ class FiltersLocalStorage(private val sharedPreferences: SharedPreferences) : Fi
             sharedPreferences.getString(FILTERS_REGION_ID, "") ?: "",
             sharedPreferences.getString(FILTERS_INDUSTRY, "") ?: "",
             sharedPreferences.getString(FILTERS_INDUSTRY_ID, "") ?: "",
-            sharedPreferences.getInt(FILTERS_SALARY, Int.MIN_VALUE),
+            sharedPreferences.getString(FILTERS_SALARY, "") ?: "",
             sharedPreferences.getBoolean(FILTERS_SALARY_ONLY, false),
         )
     }
@@ -36,7 +36,7 @@ class FiltersLocalStorage(private val sharedPreferences: SharedPreferences) : Fi
         sharedPreferences.edit().putString(FILTERS_REGION_ID, settings.regionId).apply()
         sharedPreferences.edit().putString(FILTERS_INDUSTRY, settings.industry).apply()
         sharedPreferences.edit().putString(FILTERS_INDUSTRY_ID, settings.industryId).apply()
-        sharedPreferences.edit().putInt(FILTERS_SALARY, settings.expectedSalary).apply()
+        sharedPreferences.edit().putString(FILTERS_SALARY, settings.expectedSalary).apply()
         sharedPreferences.edit().putBoolean(FILTERS_SALARY_ONLY, settings.salaryOnlyCheckbox).apply()
     }
 

@@ -23,7 +23,7 @@ interface HeadHuntersApi {
         @Query("text") query: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int = VACANCIES_PER_PAGE,
-        @QueryMap filters: HashMap<String, String>
+        @QueryMap filters: Map<String, String>
     ): SearchResponseDto
 
     @GET("areas")
