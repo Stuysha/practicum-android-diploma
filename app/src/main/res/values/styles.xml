@@ -143,4 +143,77 @@
         <item name="android:inputType">number</item>
         <item name="android:maxLines">1</item>
     </style>
+
+    <style name="ys_display_medium_large">
+        <item name="android:layout_height">26dp</item>
+        <item name="android:textSize">@dimen/text_size_22</item>
+    </style>
+
+    <style name="ys_display_regular_small">
+        <item name="android:layout_height">16dp</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+    </style>
+
+    <style name="ys_display_regular_medium">
+        <item name="android:layout_height">19dp</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="text_input_layout">
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColorHint">@color/grey_white</item>
+        <item name="boxBackgroundColor">@color/light_grey</item>
+        <item name="boxBackgroundMode">filled</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="cursorColor">@color/blue</item>
+        <item name="endIconTint">@color/black</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="hintEnabled">false</item>
+        <item name="hintTextAppearance">@style/ys_display_regular_small</item>
+        <item name="placeholderTextAppearance">@style/ys_display_regular_medium</item>
+        <item name="placeholderTextColor">@color/grey_white</item>
+    </style>
+
+    <style name="text_input_editText">
+        <item name="android:textAppearance">@style/ys_display_regular_medium</item>
+        <item name="android:textColor">@color/black_white</item>
+    </style>
+
+    <style name="ImageViewPlaceholderSearch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="TextViewPlaceholderSearch">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="CardFilterRwItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_60dp</item>
+        <item name="android:paddingVertical">6dp</item>
+        <item name="android:paddingEnd">@dimen/dimen_4dp</item>
+        <item name="android:paddingStart">@dimen/dimen_16dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="CardFilterText">
+        <item name="android:textColor">@color/black_white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
 </resources>

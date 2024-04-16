@@ -43,4 +43,9 @@
     <string name="Apply">Применить</string>
     <string name="cancel">Сбросить</string>
     <string name="separator">, </string>
+    <string name="cant_get_list">Не удалось получить список</string>
+    <string name="no_such_region">Такого региона нет</string>
+    <string name="placeholder_favourite_empty_list">Список пуст</string>
+    <string name="select_region">Выбор региона</string>
+    <string name="hint_text_select_region">Введите регион</string>
 </resources>

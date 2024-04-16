@@ -9,4 +9,8 @@
     <color name="light_gray">#E6E8EB</color>
     <!-- Тёмно-серый цвет с параметром alpha 50% -->
     <color name="dark_gray">#1A1B2280</color>
+    <color name="white_black">@color/white</color>
+    <color name="black_white">@color/black</color>
+    <color name="grey_white">@color/gray</color>
+    <color name="light_grey">@color/light_gray</color>
 </resources>

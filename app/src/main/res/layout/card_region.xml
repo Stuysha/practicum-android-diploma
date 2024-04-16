@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    style="@style/CardFilterRwItem">
+
+    <TextView
+        android:id="@+id/place_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        style="@style/CardFilterText"
+        tool:text="[Москва]"/>
+
+    <ImageView
+        android:id="@+id/place_choose_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_12dp"
+        android:src="@drawable/ic_arrow_forward_14px"/>
+
+</LinearLayout>

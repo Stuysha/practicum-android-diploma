@@ -8,4 +8,5 @@ object Constants {
     const val NO_CONNECTION_ERROR = -1
     const val BAD_REQUEST_ERROR = 400
     const val BUNDLE_KEY_VACANCY_ID = "vacancyId"
+    const val REGION_BACKSTACK_KEY = "region_key"
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_black"
+    tools:context=".ui.fragments.RegionFragment">
+
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/dimen_8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:padding="@dimen/dimen_12dp"
+            android:src="@drawable/ic_arrow_back_16px" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/ys_display_medium_large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:text="@string/select_region"
+            android:textColor="@color/black_white" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_text_input_layout"
+        style="@style/text_input_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:endIconDrawable="@drawable/ic_search_loupe_18px"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        app:placeholderText="@string/select_region">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search"
+            style="@style/text_input_editText"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="0dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rw_result"
+        android:layout_width="@dimen/zero_0dp"
+        android:layout_height="@dimen/zero_0dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_text_input_layout" />
+
+    <ProgressBar
+        android:id="@+id/pb_central_progress_bar"
+        android:layout_width="@dimen/icon_width_48dp"
+        android:layout_height="@dimen/icon_height_48dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/search_text_input_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_text_input_layout">
+
+        <ImageView
+            android:id="@+id/iv_placeholders"
+            style="@style/ImageViewPlaceholderSearch"
+            tools:src="@drawable/no_vacancy_list" />
+
+        <TextView
+            android:id="@+id/tv_placeholders"
+            style="@style/TextViewPlaceholderSearch"
+            tools:text="@string/no_such_region" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="@dimen/dimen_44dp"
+        android:layout_height="@dimen/dimen_44dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_text_input_layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>
