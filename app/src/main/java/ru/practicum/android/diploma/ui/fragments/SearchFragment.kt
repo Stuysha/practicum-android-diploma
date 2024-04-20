@@ -185,6 +185,7 @@ class SearchFragment : Fragment() {
         binding.badRequest.isVisible = false
         binding.badRequestText.isVisible = false
         binding.noVacancyToShowText.isVisible = false
+        binding.noConnectionText.isVisible = false
     }
 
     private fun showNoConnectionError(errorVariant: ErrorVariant) {
@@ -231,6 +232,7 @@ class SearchFragment : Fragment() {
             binding.badRequest.isVisible = false
             binding.badRequestText.isVisible = false
             noVacancyToShowText.isVisible = false
+            noConnectionText.isVisible = false
         }
     }
 
