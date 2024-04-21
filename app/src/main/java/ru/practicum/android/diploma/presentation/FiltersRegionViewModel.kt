@@ -16,8 +16,9 @@ class FiltersRegionViewModel(
     private val filterInteractor: FiltersInteractor,
 ) : ViewModel() {
 
-    val filtersRegionStateLiveData = MutableLiveData<FiltersRegionsState>()
-    val allAreas = mutableListOf<Area>()
+    private val _filtersRegionStateLiveData = MutableLiveData<FiltersRegionsState>()
+    val filtersRegionStateLiveData = _filtersRegionStateLiveData
+    private val allAreas = mutableListOf<Area>()
 
     init {
         filtersRegionStateLiveData.postValue(FiltersRegionsState.Start)

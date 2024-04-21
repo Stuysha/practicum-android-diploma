@@ -30,14 +30,16 @@ class FiltersLocalStorage(private val sharedPreferences: SharedPreferences) : Fi
     }
 
     override fun savePrefs(settings: FiltersSettings) {
-        sharedPreferences.edit().putString(FILTERS_COUNTRY, settings.country).apply()
-        sharedPreferences.edit().putString(FILTERS_COUNTRY_ID, settings.countryId).apply()
-        sharedPreferences.edit().putString(FILTERS_REGION, settings.region).apply()
-        sharedPreferences.edit().putString(FILTERS_REGION_ID, settings.regionId).apply()
-        sharedPreferences.edit().putString(FILTERS_INDUSTRY, settings.industry).apply()
-        sharedPreferences.edit().putString(FILTERS_INDUSTRY_ID, settings.industryId).apply()
-        sharedPreferences.edit().putString(FILTERS_SALARY, settings.expectedSalary).apply()
-        sharedPreferences.edit().putBoolean(FILTERS_SALARY_ONLY, settings.salaryOnlyCheckbox).apply()
+        with(sharedPreferences.edit()) {
+            putString(FILTERS_COUNTRY, settings.country)
+            putString(FILTERS_COUNTRY_ID, settings.countryId)
+            putString(FILTERS_REGION, settings.region)
+            putString(FILTERS_REGION_ID, settings.regionId)
+            putString(FILTERS_INDUSTRY, settings.industry)
+            putString(FILTERS_INDUSTRY_ID, settings.industryId)
+            putString(FILTERS_SALARY, settings.expectedSalary)
+            putBoolean(FILTERS_SALARY_ONLY, settings.salaryOnlyCheckbox)
+        }
     }
 
     override fun clearPrefs() {
