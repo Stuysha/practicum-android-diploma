@@ -132,11 +132,11 @@ class VacancyFragment : Fragment() {
             dutiesSubtitle.text = HtmlCompat.fromHtml(
                 vacancy.description?.addSpacesAfterLiTags() ?: "",
                 HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
-            ).trim()
+            ).trimEnd()
             coreSkills.text = HtmlCompat.fromHtml(
                 getKeySkillsText(vacancy.keySkills),
                 HtmlCompat.FROM_HTML_MODE_COMPACT
-            ).trim()
+            ).trimEnd()
             contactsName.text = vacancy.contacts?.name
             contactEmail.text = vacancy.contacts?.email
             contactsPhone.text = getPhonesText(vacancy.contacts?.phones)
@@ -194,7 +194,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun String.addSpacesAfterLiTags(): String {
-        return this.replace(Regex("<li>\\s<p>|<li>"), "<li>\u00A0")
+        return this.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0 ")
     }
 
     private fun showFields() {
