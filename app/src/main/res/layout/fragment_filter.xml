@@ -1,13 +1,168 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.FilterFragment">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/filter_toolbar"
+        style="@style/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="@dimen/toolbar_height_64dp"
+        app:buttonGravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back_16px"
+        app:title="@string/filter_settings_title" />
 
-</FrameLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/work_place_layout"
+        style="@style/work_place_input_layout_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:hint="@string/work_place"
+        android:textAlignment="viewStart"
+        app:buttonGravity="center_vertical"
+        app:endIconDrawable="@drawable/ic_arrow_forward_14px"
+        app:endIconMode="custom"
+        app:endIconTint="?attr/colorOnPrimary"
+        app:hintEnabled="true"
+        app:hintTextAppearance="@style/text_16_regular_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/work_text_input"
+            style="@style/work_text_input_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_4dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/industry_layout"
+        style="@style/work_place_input_layout_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:hint="@string/industry"
+        android:textAlignment="viewStart"
+        app:buttonGravity="center_vertical"
+        app:endIconDrawable="@drawable/ic_arrow_forward_14px"
+        app:endIconMode="custom"
+        app:endIconTint="?attr/colorOnPrimary"
+        app:hintEnabled="true"
+        app:hintTextAppearance="@style/text_16_regular_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/work_place_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/industry_text_input"
+            style="@style/work_text_input_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dimen_4dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:focusable="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salary_layout"
+        style="@style/salary_layout_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_size_16"
+        android:layout_marginTop="@dimen/margin_size_24"
+        android:focusableInTouchMode="true"
+        android:hint="@string/salary_expectation"
+        app:cursorColor="@color/light_blue"
+        app:endIconDrawable="@drawable/ic_close_cross_14px"
+        app:endIconMode="none"
+        app:endIconTint="@color/black"
+        app:hintTextColor="@color/light_blue"
+        app:layout_constraintBottom_toTopOf="@id/show_salary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/industry_layout"
+        app:placeholderText="Введите сумму">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/salary"
+            style="@style/salary_text_input_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_search_edit_text"
+            android:focusableInTouchMode="true"
+            android:textCursorDrawable="@drawable/ic_edit_text_cursor" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/show_salary_text"
+        style="@style/text_16_regular_500"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_60dp"
+        android:layout_marginTop="@dimen/margin_size_24"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/margin_size_16"
+        android:text="@string/show_only_with_salary"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/salary_layout" />
+
+    <CheckBox
+        android:id="@+id/salary_flag_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginHorizontal="4dp"
+        android:buttonTint="@color/light_blue"
+        app:layout_constraintBottom_toBottomOf="@id/show_salary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/show_salary_text" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/apply_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16dp"
+        android:layout_marginBottom="@dimen/dimen_8dp"
+        android:background="@drawable/search_button_shape"
+        android:backgroundTint="@color/light_blue"
+        android:text="@string/Apply"
+        android:textAppearance="@style/text_16_regular_500"
+        android:textColor="?attr/colorOnSurface"
+        app:cornerRadius="@dimen/dimen_12dp"
+        app:layout_constraintBottom_toTopOf="@id/clear_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/clear_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16dp"
+        android:layout_marginBottom="@dimen/margin_size_24"
+        android:background="?attr/colorPrimary"
+        android:stateListAnimator="@null"
+        android:text="@string/cancel"
+        android:textAppearance="@style/text_16_regular_500"
+        android:textColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="apply_button,clear_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

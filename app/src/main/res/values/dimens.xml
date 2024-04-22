@@ -30,5 +30,6 @@
     <dimen name="margin_size_24">24dp</dimen>
     <dimen name="margin_size_35">35dp</dimen>
     <dimen name="zero_0dp">0dp</dimen>
+    <dimen name="dimen_6dp">6dp</dimen>
 
 </resources>

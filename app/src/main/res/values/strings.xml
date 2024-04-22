@@ -35,4 +35,24 @@
     <string name="phone_title">Телефон</string>
     <string name="comment_title">Комментарий</string>
     <string name="email_subject">Отклик на вакансию</string>
+    <string name="filter_settings_title">Настройки фильтрации</string>
+    <string name="work_place">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="salary_expectation">Ожидаемая зарплата</string>
+    <string name="show_only_with_salary">Не показывать без зарплаты</string>
+    <string name="Apply">Применить</string>
+    <string name="cancel">Сбросить</string>
+    <string name="separator">, </string>
+    <string name="industry_header">Выбор отрасли</string>
+    <string name="industry_edit_text_hint">Введите отрасль</string>
+    <string name="no_such_industry">Такой отрасли нет</string>
+    <string name="country">Страна</string>
+    <string name="choose">Выбрать</string>
+    <string name="choose_country">Выбор страны</string>
+    <string name="choose_place_of_work">Выбор места работы</string>
+    <string name="region">Регион</string>
+    <string name="failed_to_get_list">Не удалось получить список</string>
+    <string name="choosing_region">Выбор региона</string>
+    <string name="enter_region">Введите регион</string>
+    <string name="no_region">Такого региона нет</string>
 </resources>

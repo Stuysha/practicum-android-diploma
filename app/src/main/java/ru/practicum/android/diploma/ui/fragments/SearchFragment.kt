@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +24,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.presentation.SearchViewModel
 import ru.practicum.android.diploma.ui.state.SearchScreenState
+import ru.practicum.android.diploma.util.Constants.BUNDLE_KEY_VACANCY_ID
 import ru.practicum.android.diploma.util.ErrorVariant
 import ru.practicum.android.diploma.util.adapter.PageVacancyAdapter
 import ru.practicum.android.diploma.util.adapter.SearchLoadStateAdapter
@@ -31,6 +34,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<SearchViewModel>()
     private var adapter: PageVacancyAdapter? = null
+    var jobSearch: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,14 +53,12 @@ class SearchFragment : Fragment() {
             viewModel.lastQuery = null
         }
 
-        vacancyList.adapter = adapter?.withLoadStateFooter(
-            footer = SearchLoadStateAdapter(),
-        )
-
+        vacancyList.adapter = adapter?.withLoadStateFooter(footer = SearchLoadStateAdapter())
         vacancyList.layoutManager = LinearLayoutManager(context)
 
-        lifecycleScope.launch {
+        jobSearch = lifecycleScope.launch {
             viewModel.stateVacancyData.collectLatest {
+                createNewAdapter()
                 adapter?.submitData(it)
             }
         }
@@ -82,6 +84,18 @@ class SearchFragment : Fragment() {
         settingListener()
     }
 
+    fun createNewAdapter() {
+        if (viewModel.lastQuery != null) {
+            adapter = PageVacancyAdapter { actionOnClick(it.id) }.apply {
+                this.addLoadStateListener(viewModel::listener)
+            }
+
+            binding.searchRecycleView.adapter = adapter?.withLoadStateFooter(
+                footer = SearchLoadStateAdapter(),
+            )
+        }
+    }
+
     fun settingListener() {
         binding.searchQuery.setOnEditorActionListener { v, actionId, event ->
             val isEnterKeyPressed = actionId == EditorInfo.IME_ACTION_DONE ||
@@ -101,8 +115,32 @@ class SearchFragment : Fragment() {
         }
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             if (it != null) {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, it.getString(context) ?: "", Toast.LENGTH_LONG).show()
                 viewModel.clearMessage()
+            }
+        }
+        binding.filterIc.setOnClickListener {
+            findNavController().navigate(R.id.filterFragment)
+        }
+        lifecycleScope.launch {
+            viewModel.stateFilters.collect {
+                if (context != null) {
+                    if (!it) {
+                        binding.filterIc.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_filter_on_24px
+                            )
+                        )
+                    } else {
+                        binding.filterIc.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_filter12px
+                            )
+                        )
+                    }
+                }
             }
         }
     }
@@ -146,6 +184,8 @@ class SearchFragment : Fragment() {
         binding.searchRecycleView.isVisible = true
         binding.badRequest.isVisible = false
         binding.badRequestText.isVisible = false
+        binding.noVacancyToShowText.isVisible = false
+        binding.noConnectionText.isVisible = false
     }
 
     private fun showNoConnectionError(errorVariant: ErrorVariant) {
@@ -191,6 +231,8 @@ class SearchFragment : Fragment() {
             noConnectionPlaceholder.isVisible = false
             binding.badRequest.isVisible = false
             binding.badRequestText.isVisible = false
+            noVacancyToShowText.isVisible = false
+            noConnectionText.isVisible = false
         }
     }
 
@@ -213,7 +255,7 @@ class SearchFragment : Fragment() {
         if (!viewModel.isClickable) return
         val navController = findNavController()
         val bundle = Bundle()
-        bundle.putString("vacancyId", id)
+        bundle.putString(BUNDLE_KEY_VACANCY_ID, id)
         navController.navigate(R.id.vacancyFragment, bundle)
         viewModel.actionOnClick()
     }
@@ -221,10 +263,12 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        jobSearch?.cancel()
     }
 
     override fun onResume() {
         super.onResume()
         hideKeyboard(binding.searchQuery)
+        viewModel.checkChangeFilter()
     }
 }

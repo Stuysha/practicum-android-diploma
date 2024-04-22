@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.network.api.HeadHuntersApi
 import ru.practicum.android.diploma.data.network.api.Request
 import ru.practicum.android.diploma.data.network.api.Request.MainSearchRequest
 import ru.practicum.android.diploma.data.network.api.Response
+import ru.practicum.android.diploma.data.network.api.ResponseList
 import ru.practicum.android.diploma.util.Constants.CODE_SUCCESS
 import ru.practicum.android.diploma.util.Constants.NO_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.isConnected
@@ -36,6 +37,18 @@ class RetrofitNetworkClient(
 
                 is Request.CurrentVacancyDetails -> {
                     headHuntersApi.getVacancy(request.id)
+                }
+
+                is Request.LoadAreas -> {
+                    if (request.areaId.isNullOrEmpty()) {
+                        ResponseList(data = headHuntersApi.loadFilterRegions())
+                    } else {
+                        headHuntersApi.loadFilterRegion(request.areaId)
+                    }
+                }
+
+                Request.LoadIndustry -> {
+                    ResponseList(headHuntersApi.loadFilterIndustry())
                 }
             }
             response.apply { resultCode = CODE_SUCCESS }

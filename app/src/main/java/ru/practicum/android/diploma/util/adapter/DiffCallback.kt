@@ -29,4 +29,3 @@ class DiffCallback(
         return oldVacancy == newVacancy
     }
 }
-

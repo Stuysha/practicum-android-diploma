@@ -85,6 +85,13 @@
         <item name="fontWeight">500</item>
     </style>
 
+    <style name="text_12_regular_400">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+        <item name="fontWeight">400</item>
+    </style>
+
     <style name="search_textview_under_query">
         <item name="android:textAppearance">@style/text_16_regular_400</item>
         <item name="android:background">@drawable/search_button_shape</item>
@@ -92,5 +99,105 @@
         <item name="android:backgroundTint">?attr/colorSurface</item>
         <item name="android:paddingHorizontal">@dimen/dimen_12dp</item>
         <item name="android:paddingVertical">@dimen/dimen_4dp</item>
+    </style>
+
+    <style name="work_place_input_layout_style">
+        <item name="boxStrokeWidth">@dimen/zero_0dp</item>
+        <item name="hintTextColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textAppearance">@style/text_16_regular_400</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:imeOptions">actionDone|flagNoExtractUi</item>
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="errorEnabled">false</item>
+    </style>
+
+    <style name="work_text_input_style">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColorHint">@color/light_blue</item>
+        <item name="android:textAppearance">@style/text_16_regular_400</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="salary_layout_style">
+        <item name="boxStrokeWidth">@dimen/zero_0dp</item>
+        <item name="android:textColorHint">?attr/colorOnSecondaryFixed</item>
+        <item name="hintTextAppearance">@style/text_12_regular_400</item>
+        <item name="boxCollapsedPaddingTop">@dimen/dimen_8dp</item>
+        <item name="placeholderTextAppearance">@style/text_16_regular_400</item>
+        <item name="placeholderTextColor">?attr/colorOnSecondaryFixed</item>
+        <item name="expandedHintEnabled">false</item>
+    </style>
+
+    <style name="salary_text_input_style">
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textAppearance">@style/text_16_regular_500</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="white_16_medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="gray_16_regular">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="fragment_filters_textInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="hintTextColor">?attr/colorOnPrimary</item>
+        <item name="placeholderTextColor">@color/gray</item>
+    </style>
+
+    <style name="TextStyleToolbar" parent="TextAppearance.AppCompat.Light.SearchResult.Title">
+        <item name="android:textSize">@dimen/font_size_22</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="title_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="TextStyleRegular16_400" parent="TextAppearance.AppCompat.Light.SearchResult.Title">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <style name="search_textInput" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="hintTextColor">?attr/colorOnPrimary</item>
+        <item name="placeholderTextColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="TextStyleMedium16_500" parent="TextAppearance.AppCompat.Light.SearchResult.Title">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+    </style>
+
+    <style name="ScreenTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+
     </style>
 </resources>

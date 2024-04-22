@@ -132,16 +132,15 @@ class VacancyFragment : Fragment() {
             dutiesSubtitle.text = HtmlCompat.fromHtml(
                 vacancy.description?.addSpacesAfterLiTags() ?: "",
                 HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
-            ).trim()
+            ).trimEnd()
             coreSkills.text = HtmlCompat.fromHtml(
                 getKeySkillsText(vacancy.keySkills),
                 HtmlCompat.FROM_HTML_MODE_COMPACT
-            ).trim()
+            ).trimEnd()
             contactsName.text = vacancy.contacts?.name
             contactEmail.text = vacancy.contacts?.email
             contactsPhone.text = getPhonesText(vacancy.contacts?.phones)
             contactsComment.text = getPhonesCommentsText(vacancy.contacts?.phones)
-
             showFields()
             hideGroups(vacancy)
 
@@ -174,7 +173,17 @@ class VacancyFragment : Fragment() {
 
     private fun hideGroups(vacancy: VacancyDetailsModel) {
         with(binding) {
-            contactsGroup.isVisible = vacancy.contacts != null
+            if (
+                vacancy.contacts?.name.isNullOrEmpty() &&
+                vacancy.contacts?.email.isNullOrEmpty() &&
+                vacancy.contacts?.phones.isNullOrEmpty()
+            ) {
+                groupContacts.visibility = View.GONE
+                contactsGroup.visibility = View.GONE
+            } else {
+                groupContacts.visibility = View.VISIBLE
+                contactsGroup.visibility = View.VISIBLE
+            }
             contactsEmailGroup.isVisible = !vacancy.contacts?.email.isNullOrBlank()
             contactsPhoneGroup.isVisible = vacancy.contacts?.phones?.isNotEmpty() ?: false
             contactsCommentGroup.isVisible =
@@ -185,7 +194,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun String.addSpacesAfterLiTags(): String {
-        return this.replace(Regex("<li>\\s<p>|<li>"), "<li>\u00A0")
+        return this.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0 ")
     }
 
     private fun showFields() {
