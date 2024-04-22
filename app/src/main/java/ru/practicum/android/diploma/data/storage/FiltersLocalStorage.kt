@@ -39,17 +39,19 @@ class FiltersLocalStorage(private val sharedPreferences: SharedPreferences) : Fi
             putString(FILTERS_INDUSTRY_ID, settings.industryId)
             putString(FILTERS_SALARY, settings.expectedSalary)
             putBoolean(FILTERS_SALARY_ONLY, settings.salaryOnlyCheckbox)
-        }
+        }.apply()
     }
 
     override fun clearPrefs() {
-        sharedPreferences.edit().remove(FILTERS_COUNTRY).apply()
-        sharedPreferences.edit().remove(FILTERS_COUNTRY_ID).apply()
-        sharedPreferences.edit().remove(FILTERS_REGION).apply()
-        sharedPreferences.edit().remove(FILTERS_REGION_ID).apply()
-        sharedPreferences.edit().remove(FILTERS_INDUSTRY).apply()
-        sharedPreferences.edit().remove(FILTERS_INDUSTRY_ID).apply()
-        sharedPreferences.edit().remove(FILTERS_SALARY).apply()
-        sharedPreferences.edit().remove(FILTERS_SALARY_ONLY).apply()
+        with(sharedPreferences.edit()) {
+            remove(FILTERS_COUNTRY)
+            remove(FILTERS_COUNTRY_ID)
+            remove(FILTERS_REGION)
+            remove(FILTERS_REGION_ID)
+            remove(FILTERS_INDUSTRY)
+            remove(FILTERS_INDUSTRY_ID)
+            remove(FILTERS_SALARY)
+            remove(FILTERS_SALARY_ONLY)
+        }.apply()
     }
 }
